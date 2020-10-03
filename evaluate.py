@@ -1,12 +1,12 @@
-from argparse import ArgumentParser, Namespace
 import json
+from argparse import ArgumentParser, Namespace
 from pathlib import Path
 
+import torch
 from omegaconf import DictConfig, OmegaConf
 from pytorch_lightning import Trainer, seed_everything
-import torch
 
-from src.model.net import ShortChunkCNN_Res, FCN
+from src.model.net import FCN, ShortChunkCNN_Res
 from src.task.pipeline import DataPipeline
 from src.task.runner import AutotaggingRunner
 
@@ -17,13 +17,14 @@ def get_config(args: Namespace) -> DictConfig:
     model_config_dir = child_config_dir / "model"
     pipeline_config_dir = child_config_dir / "pipeline"
     runner_config_dir = child_config_dir / "runner"
-    
+
     config = OmegaConf.create()
     model_config = OmegaConf.load(model_config_dir / f"{args.model}.yaml")
     pipeline_config = OmegaConf.load(pipeline_config_dir / f"{args.pipeline}.yaml")
     runner_config = OmegaConf.load(runner_config_dir / f"{args.runner}.yaml")
     config.update(model=model_config, pipeline=pipeline_config, runner=runner_config)
     return config
+
 
 def main(args) -> None:
     seed_everything(42)
@@ -33,22 +34,22 @@ def main(args) -> None:
     pipeline = DataPipeline(pipline_config=config.pipeline)
 
     dataset = pipeline.get_dataset(
-                pipeline.dataset_builder,
-                config.pipeline.dataset.path,
-                args.type,
-                config.pipeline.dataset.input_length
+        pipeline.dataset_builder,
+        config.pipeline.dataset.path,
+        args.type,
+        config.pipeline.dataset.input_length,
     )
     dataloader = pipeline.get_dataloader(
-                dataset,
-                shuffle=False,
-                drop_last=True,
-                **pipeline.pipeline_config.dataloader.params,
+        dataset,
+        shuffle=False,
+        drop_last=True,
+        **pipeline.pipeline_config.dataloader.params,
     )
     if args.model == "ShortChunkCNN_Res":
         model = ShortChunkCNN_Res(**config.model.params)
     elif args.model == "FCN":
         model = FCN(**config.model.params)
-    
+
     runner = AutotaggingRunner(model, config.runner)
 
     checkpoint_path = (
@@ -79,14 +80,28 @@ def main(args) -> None:
     ) as io:
         json.dump(results, io, indent=4)
 
+
 if __name__ == "__main__":
     parser = ArgumentParser()
+<<<<<<< HEAD
     parser.add_argument("--model", default="ShortChunkCNN_Res", type=str, choices=["FCN","ShortChunkCNN_Res"])
+=======
+    parser.add_argument(
+        "--type", default="TEST", type=str, choices=["TRAIN", "VALID", "TEST"]
+    )
+    parser.add_argument(
+        "--model",
+        default="ShortChunkCNN_Res",
+        type=str,
+        choices=["FCN", "ShortChunkCNN_Res"],
+    )
+>>>>>>> e5aaf9d8a390d4ce80acce7b470733f25114b0fb
     parser.add_argument("--dataset", default="mtat", type=str, choices=["mtat"])
     parser.add_argument("--pipeline", default="pv00", type=str)
     parser.add_argument("--runner", default="rv01", type=str)
     parser.add_argument("--reproduce", default=False, action="store_true")
-    parser.add_argument("--checkpoint", default="epoch=40-roc_auc=0.8961-pr_auc=0.4152", type=str)
+    parser.add_argument(
+        "--checkpoint", default="epoch=40-roc_auc=0.8961-pr_auc=0.4152", type=str
+    )
     args = parser.parse_args()
     main(args)
-
