@@ -83,19 +83,7 @@ def main(args) -> None:
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-<<<<<<< HEAD
     parser.add_argument("--model", default="ShortChunkCNN_Res", type=str, choices=["FCN","ShortChunkCNN_Res"])
-=======
-    parser.add_argument(
-        "--type", default="TEST", type=str, choices=["TRAIN", "VALID", "TEST"]
-    )
-    parser.add_argument(
-        "--model",
-        default="ShortChunkCNN_Res",
-        type=str,
-        choices=["FCN", "ShortChunkCNN_Res"],
-    )
->>>>>>> e5aaf9d8a390d4ce80acce7b470733f25114b0fb
     parser.add_argument("--dataset", default="mtat", type=str, choices=["mtat"])
     parser.add_argument("--pipeline", default="pv00", type=str)
     parser.add_argument("--runner", default="rv01", type=str)

@@ -15,7 +15,7 @@ Musical tags are used to describe music such as genre or instrument of specific 
 - Every Load to STFT will be done on-the-fly `you do not need .npy files`.
 
 
-* Use Tags & Split dataset
+## Use Tags & Split dataset
 - Referecne: https://github.com/minzwon/sota-music-tagging-models/tree/master/split/mtat
 ```
 ['guitar', 'classical', 'slow', 'techno', 'strings', 'drums',
@@ -29,9 +29,18 @@ Musical tags are used to describe music such as genre or instrument of specific 
 ```
 
 ## Available Models
+Referecne: https://github.com/minzwon/sota-music-tagging-models/tree/master/
 
 - **FCN** : Automatic Tagging using Deep Convolutional Neural Networks, Choi et al., 2016 [[arxiv](https://arxiv.org/abs/1606.00298)]
 - **Short-chunk CNN + Residual** : Short-chunk CNN with residual connections.[[arxiv](https://arxiv.org/abs/2006.00751)]
+
+## Performance
+Model | Test Loss | Test rocauc | Test prauc
+:---:|:---:|:---:|:---:
+FCN(Implementation)| 0.141 | 0.898 | 0.423
+FCN(paper)| | 0.894 |
+ShortChunkCNN_Res(Implementation)| 0.148 | 0.884 | 0.403 
+ShortChunkCNN_Res(paper)|  | 0.919 | 0.461 
 
 ## Requirements
 
@@ -44,6 +53,7 @@ pip install -r requirements.txt
 ## Training history
 
 <img src="img/tensorload_log.png">
+
 ```
 tensorboard --logdir exp/mtat/ 
 ```
@@ -96,6 +106,30 @@ Options
 ### Environment
 
 ### Project structure
+```
+.
+├── README.md
+├── conf
+│   └── mtat
+├── dataset
+│   ├── mp3
+│   ├── split
+│   └── test_set
+├── evaluate.py
+├── exp
+│   └── mtat
+├── infer.py
+├── requirements.txt
+├── src
+│   ├── __pycache__
+│   ├── data.py
+│   ├── metric.py
+│   ├── model
+│   ├── task
+│   └── utils.py
+└── train.py
+```
+
 
 ### License
 * Licensed under an MIT license.
