@@ -2,7 +2,7 @@ version: pv00
 type: DataPipeline
 dataset:
   type: MTATDataset
-  path: ../dataset/mtat
+  path: dataset/mtat
   input_length: 59049
 dataloader:
   type: DataLoader

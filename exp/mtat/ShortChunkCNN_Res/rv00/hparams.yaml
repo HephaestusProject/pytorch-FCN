@@ -1,0 +1,15 @@
+learning_rate: 0.01
+momentum: 0.9
+weight_decay: 1.0e-06
+nesterov: true
+mode: min
+factor: 0.2
+patience: 3
+verbose: true
+max_epochs: 100
+gpus:
+- 0
+- 1
+distributed_backend: dp
+benchmark: false
+deterministic: true
