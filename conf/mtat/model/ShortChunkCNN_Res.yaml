@@ -1,0 +1,11 @@
+version: shortchunkcnn_res
+type: ShortChunkCNN_Res
+params:
+  # CNN Parameters
+  n_channels: 128
+  sample_rate: 16000
+  n_fft : 512
+  n_mels : 128
+  n_class : 50
+  f_min: 0.0
+  f_max: 8000.0
