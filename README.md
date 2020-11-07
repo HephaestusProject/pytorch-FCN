@@ -28,6 +28,17 @@ Musical tags are used to describe music such as genre or instrument of specific 
 'weird', 'country', 'metal', 'female voice', 'choral']
 ```
 
+### Download Dataset
+
+```
+cd dataset/mtat/mp3
+wget http://mi.soi.city.ac.uk/datasets/magnatagatune/mp3.zip.001
+wget http://mi.soi.city.ac.uk/datasets/magnatagatune/mp3.zip.002
+wget http://mi.soi.city.ac.uk/datasets/magnatagatune/mp3.zip.003
+cat mp3.zip.* > mp3_all.zip
+unzip mp3_all.zip
+```
+
 ## Available Models
 Referecne: https://github.com/minzwon/sota-music-tagging-models/tree/master/
 

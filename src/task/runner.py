@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from omegaconf import DictConfig
-from pytorch_lightning import EvalResult, LightningModule, TrainResult
+from pytorch_lightning import LightningModule
 from torch.optim import SGD
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
@@ -37,17 +37,17 @@ class AutotaggingRunner(LightningModule):
             mode=self.hparams.mode,
         )
 
-        return [opt], [scheduler]
+        return {
+            'optimizer': opt,
+            'lr_scheduler': scheduler,
+            'monitor': 'val_loss'
+        }
 
     def training_step(self, batch, batch_idx):
         audio, label = batch
         prediction = self.model(audio)
         loss = self.criterion(prediction, label)
-        return {
-            "loss": loss,
-            "progress_bar": {"train_loss": loss},
-            "log": {"train_loss": loss},
-        }
+        return loss
 
     def validation_step(self, batch, batch_idx):
         audio, label = batch
@@ -60,14 +60,17 @@ class AutotaggingRunner(LightningModule):
         predctions = torch.stack([output["predictions"] for output in outputs])
         labels = torch.stack([output["labels"] for output in outputs])
         roc_auc, pr_auc = get_auc(predctions, labels)
-        return {
-            "progress_bar": {
-                "val_loss": val_loss,
-                "roc_auc": roc_auc,
-                "pr_auc": pr_auc,
-            },
-            "log": {"val_loss": val_loss, "roc_auc": roc_auc, "pr_auc": pr_auc},
-        }
+        self.log_dict(
+            {"val_loss": val_loss,
+            "roc_auc": roc_auc,
+            "pr_auc": pr_auc,},
+            prog_bar=True,
+            logger=True,
+            on_step=False,
+            on_epoch=True,
+            sync_dist=True,
+        )
+        return {"val_loss": val_loss, "roc_auc": roc_auc, "pr_auc": pr_auc}
 
     def test_step(self, batch, batch_idx):
         audio, label = batch
@@ -80,6 +83,4 @@ class AutotaggingRunner(LightningModule):
         predctions = torch.stack([output["predictions"] for output in outputs])
         labels = torch.stack([output["labels"] for output in outputs])
         roc_auc, pr_auc = get_auc(predctions, labels)
-        return {
-            "log": {"val_loss": val_loss, "roc_auc": roc_auc, "pr_auc": pr_auc},
-        }
+        return {"val_loss": val_loss, "roc_auc": roc_auc, "pr_auc": pr_auc}

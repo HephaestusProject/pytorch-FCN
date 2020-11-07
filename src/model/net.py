@@ -56,7 +56,6 @@ class FCN(nn.Module):
         x = self.to_db(x)
         x = x.unsqueeze(1)
         x = self.spec_bn(x)
-
         # FCN
         x = self.layer1(x)
         x = self.layer2(x)

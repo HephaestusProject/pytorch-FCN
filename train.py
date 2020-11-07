@@ -74,19 +74,14 @@ def main(args) -> None:
         **config.runner.trainer.params,
         logger=logger,
         checkpoint_callback=checkpoint_callback,
-        early_stop_callback=early_stop_callback,
+        callbacks=[early_stop_callback],
     )
     trainer.fit(runner, datamodule=pipeline)
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument(
-        "--model",
-        default="ShortChunkCNN_Res",
-        type=str,
-        choices=["FCN", "ShortChunkCNN_Res"],
-    )
+    parser.add_argument("--model", default="ShortChunkCNN_Res", type=str, choices=["FCN", "ShortChunkCNN_Res"])
     parser.add_argument("--dataset", default="mtat", type=str, choices=["mtat"])
     parser.add_argument("--pipeline", default="pv00", type=str)
     parser.add_argument("--runner", default="rv00", type=str)

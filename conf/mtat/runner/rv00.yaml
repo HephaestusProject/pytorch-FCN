@@ -18,7 +18,7 @@ trainer:
   type: Trainer
   params:
     max_epochs: 100
-    gpus: [0, 1]
+    gpus: [0]
     distributed_backend: dp # train.py: ddp, evaluate.py: dp
     benchmark: False
     deterministic: True

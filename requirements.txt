@@ -1,7 +1,7 @@
-torch==1.6.0
-torchvision==0.6.0 
-pytorch-lightning==0.8.5
-torchaudio==0.6.0
+torch==1.7.0
+torchvision==0.8.1
+torchaudio==0.7.0
+omegaconf==2.0.4
 audioread==2.1.8
 h5py==2.10.0
 librosa==0.7.2
