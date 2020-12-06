@@ -89,12 +89,16 @@ if __name__ == "__main__":
         type=str,
         choices=["FCN", "ShortChunkCNN_Res"],
     )
+    parser.add_argument("--type", default="TEST", type=str, choices=["TEST"])
     parser.add_argument("--dataset", default="mtat", type=str, choices=["mtat"])
-    parser.add_argument("--pipeline", default="pv00", type=str)
-    parser.add_argument("--runner", default="rv01", type=str)
+    parser.add_argument("--pipeline", default="pv_AudioInput3sec", type=str, choices=["pv_AudioInput3sec","pv_AudioInput30sec"])
+    parser.add_argument("--runner", default="rv00", type=str, choices=["rv00","rv01"])
     parser.add_argument("--reproduce", default=False, action="store_true")
     parser.add_argument(
-        "--checkpoint", default="epoch=40-roc_auc=0.8961-pr_auc=0.4152", type=str
-    )
+        "--checkpoint", 
+        default="epoch=25-roc_auc=0.8929-pr_auc=0.4043",
+        type=str,
+        choices=["epoch=23-roc_auc=0.9044-pr_auc=0.4403","epoch=25-roc_auc=0.8929-pr_auc=0.4043"]
+        )
     args = parser.parse_args()
     main(args)

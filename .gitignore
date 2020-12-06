@@ -111,13 +111,12 @@ venv.bak/
 *.tar
 *.bin
 *.zip
-*.ckpt
 *.mp3
 *.zip
 *.csv
 
 # ckpt
-exp/mtat/ShortChunkCNN_Res/rv01/epoch=37-roc_auc=0.8804-pr_auc=0.4010.ckpt
+exp/mtat/ShortChunkCNN_Res/rv00/epoch=25-roc_auc=0.8929-pr_auc=0.4043.ckpt
 
 # Tensorboard
 events.out.tfevents.*

@@ -49,12 +49,12 @@ def main(args) -> None:
     if args.model == "ShortChunkCNN_Res":
         input_length = 59049
         model = ShortChunkCNN_Res(**config.model.params)
-        checkpoint_path = f"exp/mtat/ShortChunkCNN_Res/rv01/epoch=27-roc_auc=0.8948-pr_auc=0.4039.ckpt"
+        checkpoint_path = f"exp/mtat/ShortChunkCNN_Res/rv00/epoch=25-roc_auc=0.8929-pr_auc=0.4043.ckpt"
     elif args.model == "FCN":
         input_length = 464000
         model = FCN(**config.model.params)
         checkpoint_path = (
-            f"exp/mtat/FCN/rv00/epoch=48-roc_auc=0.9025-pr_auc=0.4342.ckpt"
+            f"exp/mtat/FCN/rv01/epoch=23-roc_auc=0.9044-pr_auc=0.4403.ckpt"
         )
     runner = AutotaggingRunner(model, config.runner)
     state_dict = torch.load(checkpoint_path, map_location=torch.device("cpu"))
@@ -84,13 +84,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model", default="FCN", type=str, choices=["ShortChunkCNN_Res", "FCN"]
     )
-    parser.add_argument("--dataset", default="mtat", type=str)
-    parser.add_argument("--runner", default="rv00", type=str)
-    parser.add_argument("--threshold", default=0.4, type=float)
-    parser.add_argument("--pipeline", default="pv00", type=str)
+    parser.add_argument("--dataset", default="mtat", type=str, choices=["mtat"])
+    parser.add_argument("--pipeline", default="pv_AudioInput30sec", type=str, choices=["pv_AudioInput3sec","pv_AudioInput30sec"])
+    parser.add_argument("--runner", default="rv01", type=str, choices=["rv00","rv01"])
+    parser.add_argument("--threshold", default=0.5, type=float)
     parser.add_argument(
         "--audio_path",
-        default="dataset/mtat/test_mp3/sample1.mp3",
+        default="dataset/mtat/test_mp3/sample2.mp3",
         type=str,
         choices=["dataset/test_mp3/sample1.mp3", "dataset/test_mp3/sample2.mp3"],
     )
