@@ -37,11 +37,7 @@ class AutotaggingRunner(LightningModule):
             mode=self.hparams.mode,
         )
 
-        return {
-            'optimizer': opt,
-            'lr_scheduler': scheduler,
-            'monitor': 'val_loss'
-        }
+        return {"optimizer": opt, "lr_scheduler": scheduler, "monitor": "val_loss"}
 
     def training_step(self, batch, batch_idx):
         audio, label = batch
@@ -61,9 +57,11 @@ class AutotaggingRunner(LightningModule):
         labels = torch.stack([output["labels"] for output in outputs])
         roc_auc, pr_auc = get_auc(predctions, labels)
         self.log_dict(
-            {"val_loss": val_loss,
-            "roc_auc": roc_auc,
-            "pr_auc": pr_auc,},
+            {
+                "val_loss": val_loss,
+                "roc_auc": roc_auc,
+                "pr_auc": pr_auc,
+            },
             prog_bar=True,
             logger=True,
             on_step=False,
